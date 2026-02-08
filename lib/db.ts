@@ -73,7 +73,19 @@ export async function getStats() {
 }
 
 // Target weights for next workout
-export const targetWeights = {
+interface Exercise {
+  name: string
+  sets: string
+  weight: string
+  priority?: boolean
+}
+
+interface WorkoutDay {
+  name: string
+  exercises: Exercise[]
+}
+
+export const targetWeights: Record<string, WorkoutDay> = {
   A: {
     name: 'Push + Delts',
     exercises: [
