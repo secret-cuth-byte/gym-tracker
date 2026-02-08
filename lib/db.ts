@@ -72,12 +72,46 @@ export async function getStats() {
   }
 }
 
+// Program info
+export const programInfo = {
+  name: 'Superhero Aesthetics',
+  duration: '12 weeks',
+  frequency: '3× per week',
+  focus: ['Shoulder width (delts)', 'V-taper (lats)', 'Upper chest', 'Arm size'],
+  expectedGains: {
+    weight: '+1.5–2.5 kg lean mass',
+    shoulders: 'Visibly wider by week 6–8',
+    arms: 'Fuller in sleeves',
+    chest: 'Thicker even relaxed'
+  }
+}
+
+// Day descriptions
+export const dayDescriptions: Record<string, { name: string; focus: string; why: string }> = {
+  A: {
+    name: 'Push + Delts',
+    focus: 'Chest width & shoulder caps',
+    why: 'Incline pressing builds upper chest pop. Heavy lateral work creates the capped deltoid look that makes you look wider in any shirt.'
+  },
+  B: {
+    name: 'Pull + Arms',
+    focus: 'V-taper & arm thickness',
+    why: 'Wide lats create the V-taper illusion. Hammer curls hit brachialis for that sleeve-stretching thickness. Rear delts complete the 3D shoulder look.'
+  },
+  C: {
+    name: 'Legs + Upper Finish',
+    focus: 'Foundation & polish',
+    why: 'Leg work maintains proportion and drives systemic growth hormones. Upper finishers hit lagging parts while you\'re fresh from leg focus.'
+  }
+}
+
 // Target weights for next workout
 interface Exercise {
   name: string
   sets: string
   weight: string
   priority?: boolean
+  note?: string
 }
 
 interface WorkoutDay {
@@ -89,36 +123,49 @@ export const targetWeights: Record<string, WorkoutDay> = {
   A: {
     name: 'Push + Delts',
     exercises: [
-      { name: 'Chest Press Machine', sets: '4×6-10', weight: '55 kg' },
-      { name: 'Flat Dumbbell Press', sets: '3×8-12', weight: '14-16 kg DBs' },
-      { name: 'Shoulder Press Machine', sets: '3×8-10', weight: '20 kg' },
-      { name: 'Cable Lateral Raise', sets: '4×12-20', weight: '2.5-5 kg', priority: true },
-      { name: 'Pec Deck / Cable Fly', sets: '3×12-15', weight: '45 kg' },
-      { name: 'Tricep Press Machine', sets: '3×10-14', weight: '40 kg' },
+      { name: 'Chest Press Machine', sets: '4×6-10', weight: '55 kg', note: 'Control eccentric' },
+      { name: 'Flat Dumbbell Press', sets: '3×8-12', weight: '14-16 kg DBs', note: 'Deep stretch at bottom' },
+      { name: 'Shoulder Press Machine', sets: '3×8-10', weight: '20 kg', note: 'Full ROM' },
+      { name: 'Cable Lateral Raise', sets: '4×12-20', weight: '2.5-5 kg', priority: true, note: 'Pause at top, partials last set' },
+      { name: 'Pec Deck / Cable Fly', sets: '3×12-15', weight: '45 kg', note: 'Squeeze & stretch' },
+      { name: 'Tricep Press Machine', sets: '3×10-14', weight: '40 kg', note: 'Lock out each rep' },
     ]
   },
   B: {
     name: 'Pull + Arms',
     exercises: [
-      { name: 'Pull-Ups', sets: '4×6-10', weight: 'BW or assisted' },
-      { name: 'Single-Arm Lat Pulldown', sets: '3×10-14', weight: '20-25 kg/arm' },
-      { name: 'Chest-Supported Row', sets: '3×8-12', weight: '30-35 kg' },
-      { name: 'Straight-Arm Pulldown', sets: '3×12-15', weight: '18-22 kg' },
-      { name: 'Rear Delt Cable Fly', sets: '4×15-20', weight: '2.5-5 kg/side' },
-      { name: 'EZ-Bar Curl', sets: '3×8-12', weight: '18-20 kg' },
-      { name: 'Hammer Curl', sets: '3×10-14', weight: '10-12 kg DBs' },
+      { name: 'Pull-Ups', sets: '4×6-10', weight: 'BW or assisted', note: 'Full hang to chin over' },
+      { name: 'Single-Arm Lat Pulldown', sets: '3×10-14', weight: '20-25 kg/arm', note: 'Elbow to hip' },
+      { name: 'Chest-Supported Row', sets: '3×8-12', weight: '30-35 kg', note: 'Squeeze shoulder blades' },
+      { name: 'Straight-Arm Pulldown', sets: '3×12-15', weight: '18-22 kg', note: 'Feel the lats' },
+      { name: 'Rear Delt Cable Fly', sets: '4×15-20', weight: '2.5-5 kg/side', priority: true, note: 'Light, high reps' },
+      { name: 'EZ-Bar Curl', sets: '3×8-12', weight: '18-20 kg', note: 'Strict, no swing' },
+      { name: 'Hammer Curl', sets: '3×10-14', weight: '10-12 kg DBs', note: 'Brachialis focus' },
     ]
   },
   C: {
     name: 'Legs + Upper Finish',
     exercises: [
-      { name: 'Squat / Hack Squat', sets: '4×6-10', weight: '50-60 kg' },
-      { name: 'Romanian Deadlift', sets: '3×8-12', weight: '50-60 kg' },
-      { name: 'Leg Press', sets: '3×10-15', weight: '100-120 kg' },
-      { name: 'Seated Leg Curl', sets: '3×12-15', weight: '25-30 kg' },
-      { name: 'Cable Lateral Raise', sets: '3×15-20', weight: '2.5 kg', priority: true },
-      { name: 'Incline Dumbbell Curl', sets: '3×10-14', weight: '8-10 kg DBs' },
-      { name: 'Rope Pushdown', sets: '3×12-15', weight: '25-30 kg' },
+      { name: 'Squat / Hack Squat', sets: '4×6-10', weight: '50-60 kg', note: 'Depth over weight' },
+      { name: 'Romanian Deadlift', sets: '3×8-12', weight: '50-60 kg', note: 'Hamstring stretch' },
+      { name: 'Leg Press', sets: '3×10-15', weight: '100-120 kg', note: 'Full range' },
+      { name: 'Seated Leg Curl', sets: '3×12-15', weight: '25-30 kg', note: 'Squeeze at top' },
+      { name: 'Cable Lateral Raise', sets: '3×15-20', weight: '2.5 kg', priority: true, note: 'Shoulder finisher' },
+      { name: 'Incline Dumbbell Curl', sets: '3×10-14', weight: '8-10 kg DBs', note: 'Long head stretch' },
+      { name: 'Rope Pushdown', sets: '3×12-15', weight: '25-30 kg', note: 'Spread at bottom' },
     ]
+  }
+}
+
+// Session summaries (can be updated after each session)
+export const sessionSummaries: Record<number, { summary: string; wins: string[]; nextFocus: string }> = {
+  1: {
+    summary: 'First session in the books! Found baseline working weights across all push movements. Energy was solid, discovered the sweet spots.',
+    wins: [
+      'Chest press dialed in at 55kg',
+      'Pec deck felt strong at 45kg',
+      'Good mind-muscle connection on laterals'
+    ],
+    nextFocus: 'Day B coming up — focus on pull-up form and finding lat pulldown weights. Keep lateral raises light and strict.'
   }
 }
