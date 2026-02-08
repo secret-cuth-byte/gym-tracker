@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground: #ededed;
+  --background: #0a0a0a;
+  --accent: #3b82f6;
+  --accent-green: #22c55e;
+  --card-bg: #171717;
+  --card-border: #262626;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.card {
+  @apply bg-[#171717] border border-[#262626] rounded-xl p-6;
+}
+
+.stat-card {
+  @apply card flex flex-col gap-2;
+}
+
+.stat-value {
+  @apply text-3xl font-bold text-white;
+}
+
+.stat-label {
+  @apply text-sm text-gray-400 uppercase tracking-wide;
+}
+
+.exercise-row {
+  @apply flex justify-between items-center py-3 border-b border-[#262626] last:border-0;
+}
+
+.progress-bar {
+  @apply h-2 bg-[#262626] rounded-full overflow-hidden;
+}
+
+.progress-fill {
+  @apply h-full bg-blue-500 rounded-full transition-all duration-500;
+}
