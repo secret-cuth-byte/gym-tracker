@@ -2,27 +2,43 @@
 
 import { useState, useEffect } from 'react'
 
-const PASSWORD = 'superman-luke-12'
-const STORAGE_KEY = 'gym-tracker-auth'
-
 export default function AuthGuard({ children }: { children: React.ReactNode }) {
   const [isAuthed, setIsAuthed] = useState<boolean | null>(null)
   const [input, setInput] = useState('')
   const [error, setError] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
 
   useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY)
-    setIsAuthed(stored === 'true')
+    // Check server-side auth status
+    fetch('/api/auth')
+      .then(r => r.json())
+      .then(data => setIsAuthed(data.authenticated))
+      .catch(() => setIsAuthed(false))
   }, [])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (input === PASSWORD) {
-      localStorage.setItem(STORAGE_KEY, 'true')
-      setIsAuthed(true)
-    } else {
+    setSubmitting(true)
+    setError(false)
+
+    try {
+      const res = await fetch('/api/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: input })
+      })
+
+      if (res.ok) {
+        setIsAuthed(true)
+      } else {
+        setError(true)
+        setInput('')
+        setTimeout(() => setError(false), 1000)
+      }
+    } catch {
       setError(true)
-      setTimeout(() => setError(false), 1000)
+    } finally {
+      setSubmitting(false)
     }
   }
 
@@ -52,14 +68,19 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
               placeholder="Password"
               className={`w-full bg-[#0f0f0f] border ${error ? 'border-red-500' : 'border-[#262626]'} rounded-lg px-4 py-3 text-center text-lg focus:outline-none focus:border-blue-500 transition`}
               autoFocus
+              disabled={submitting}
             />
             <button
               type="submit"
-              className="w-full mt-4 bg-blue-600 hover:bg-blue-500 text-white font-medium py-3 rounded-lg transition"
+              disabled={submitting}
+              className="w-full mt-4 bg-blue-600 hover:bg-blue-500 text-white font-medium py-3 rounded-lg transition disabled:opacity-50"
             >
-              Enter
+              {submitting ? 'Checking...' : 'Enter'}
             </button>
           </form>
+          <p className="text-xs text-gray-500 mt-4">
+            Secured with HTTP-only cookie
+          </p>
         </div>
       </div>
     )
